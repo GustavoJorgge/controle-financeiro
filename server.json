@@ -15,6 +15,14 @@
             "category": "Hamburguer",
             "price":50,
             "createdAt": "2025-05-13T21:40:23.828Z"
+        },
+        {
+            "id":3,
+            "description": "Combustível",
+            "type": "outcome",
+            "category": "Veículos",
+            "price":70,
+            "createdAt": "2025-05-13T21:40:23.828Z"
         }
     ]
 }
