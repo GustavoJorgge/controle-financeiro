@@ -3,25 +3,29 @@ import { CloseButton, Content, Overlay, TransactionType, TransactionTypeButton }
 import { ArrowCircleDown, ArrowCircleUp, X } from "phosphor-react";
 import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 
 const newTransactionFormSchema = z.object({
     description: z.string(),
     price: z.number(),
     category: z.string(),
-    // type: z.enum(['income', 'outcome']),
+    type: z.enum(['income', 'outcome']),
 });
 
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>;
 
 export function NewTransactionModal() {
     const {
+        control,
         register,
         handleSubmit,
         formState: { isSubmitting }
     } = useForm<NewTransactionFormInputs>({
-        resolver: zodResolver(newTransactionFormSchema)
+        resolver: zodResolver(newTransactionFormSchema),
+        defaultValues: {
+            type: 'income'
+        }
     })
 
     async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
@@ -58,17 +62,33 @@ export function NewTransactionModal() {
                         required
                         {...register('category')} />
 
-                    <TransactionType>
-                        <TransactionTypeButton variant='income' value='income'>
-                            <ArrowCircleUp size={24} />
-                            Entrada
-                        </TransactionTypeButton>
+                    {/* // O componente <Controller> é fornecido pela biblioteca react-hook-form.
+// Ele serve para integrar componentes de formulário customizados (não nativamente compatíveis com HTML form inputs)
+// ao sistema de controle de formulários gerenciado pelo react-hook-form. */}
+                    <Controller
+                        control={control}     // A prop 'control' é passada para o Controller, permitindo que ele tenha acesso ao contexto do formulário.
+                        name="type"
+                        // A função render define como o campo será exibido visualmente no formulário.
+                        // Ela recebe um objeto contendo várias propriedades úteis, como 'field', que contém as principais funções e valores do campo.
+                        render={({ field }) => {
+                            console.log(field)
+                            return (
+                                <TransactionType
+                                    onValueChange={field.onChange} // Aqui, está vinculado à função onChange do campo controlado, mantendo o estado do formulário sincronizado.
+                                    value={field.value}> 
+                                    <TransactionTypeButton variant='income' value='income'>
+                                        <ArrowCircleUp size={24} />
+                                        Entrada
+                                    </TransactionTypeButton>
 
-                        <TransactionTypeButton variant='outcome' value='outcome'>
-                            <ArrowCircleDown size={24} />
-                            Saida
-                        </TransactionTypeButton>
-                    </TransactionType>
+                                    <TransactionTypeButton variant='outcome' value='outcome'>
+                                        <ArrowCircleDown size={24} />
+                                        Saida
+                                    </TransactionTypeButton>
+                                </TransactionType>
+                            )
+                        }}
+                    />
 
                     <button type="submit" disabled={isSubmitting}>
                         Cadastrar
