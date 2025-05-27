@@ -4,8 +4,8 @@ import { ArrowCircleDown, ArrowCircleUp, X } from "phosphor-react";
 import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useContext } from "react";
 import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { useContextSelector } from "use-context-selector";
 
 
 const newTransactionFormSchema = z.object({
@@ -18,7 +18,9 @@ const newTransactionFormSchema = z.object({
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>;
 
 export function NewTransactionModal() {
-    const {createTransaction} = useContext (TransactionsContext)
+    const createTransaction = useContextSelector(TransactionsContext, (context) => {
+        return context.createTransaction;
+    })
 
     const {
         control,
@@ -33,9 +35,9 @@ export function NewTransactionModal() {
         }
     })
 
-    async function handleCreateNewTransaction(data: NewTransactionFormInputs) {     
-        const {description, price, category, type} = data;
-        
+    async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
+        const { description, price, category, type } = data;
+
         await createTransaction({
             description,
             price,
@@ -87,7 +89,7 @@ export function NewTransactionModal() {
                             return (
                                 <TransactionType
                                     onValueChange={field.onChange} // Aqui, está vinculado à função onChange do campo controlado, mantendo o estado do formulário sincronizado.
-                                    value={field.value}> 
+                                    value={field.value}>
                                     <TransactionTypeButton variant='income' value='income'>
                                         <ArrowCircleUp size={24} />
                                         Entrada

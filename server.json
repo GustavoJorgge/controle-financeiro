@@ -55,6 +55,30 @@
       "type": "outcome",
       "createdAt": "2025-05-21T03:34:54.130Z",
       "id": 7
+    },
+    {
+      "description": "Salario",
+      "price": 3000,
+      "category": "Salario",
+      "type": "income",
+      "createdAt": "2025-05-27T23:03:18.505Z",
+      "id": 8
+    },
+    {
+      "description": "teste",
+      "price": 500,
+      "category": "teste",
+      "type": "outcome",
+      "createdAt": "2025-05-27T23:03:39.848Z",
+      "id": 9
+    },
+    {
+      "description": "salaraio",
+      "price": 1200,
+      "category": "ss",
+      "type": "income",
+      "createdAt": "2025-05-27T23:03:52.795Z",
+      "id": 10
     }
   ]
 }
